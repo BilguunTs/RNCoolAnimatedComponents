@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {useSharedValue} from 'react-native-reanimated';
+import {View, StyleSheet} from 'react-native';
 
 const Main = () => {
+  const valueY = useSharedValue(0);
   return (
     <View style={styles.container}>
-      <Text>Hello this is me</Text>
-
-      <View style={styles.btn}></View>
+      <View
+        style={{transform: [{translateY: valueY.value}], ...styles.btn}}></View>
     </View>
   );
 };
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   btn: {
     width: 120,
