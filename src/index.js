@@ -1,13 +1,32 @@
 import React from 'react';
-import {useSharedValue} from 'react-native-reanimated';
-import {View, StyleSheet} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
+import {View, StyleSheet, Button} from 'react-native';
 
 const Main = () => {
   const valueY = useSharedValue(0);
+  const valueX = useSharedValue(0);
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {translateX: valueX.value * 200},
+        {translateY: valueY.value * 200},
+      ],
+    };
+  });
   return (
     <View style={styles.container}>
-      <View
-        style={{transform: [{translateY: valueY.value}], ...styles.btn}}></View>
+      <Animated.View style={[styles.btn, animatedStyles]} />
+      <Button
+        title="Click"
+        onPress={() => {
+          valueY.value = withSpring(Math.random(-255, 255));
+          valueX.value = withSpring(Math.random(-255, 255));
+        }}
+      />
     </View>
   );
 };
@@ -21,7 +40,7 @@ const styles = StyleSheet.create({
   btn: {
     width: 120,
     height: 120,
-    borderRadius: 20,
+    borderRadius: 60,
     backgroundColor: 'purple',
   },
 });
